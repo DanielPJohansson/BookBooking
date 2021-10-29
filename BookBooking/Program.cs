@@ -5,9 +5,11 @@ namespace BookBooking
 {
     class Program
     {
+        
+
         static void Main(string[] args)
         {
-            List<Book> books = new List<Book>()
+            Library.Books = new List<Book>()
             {
                 new Book("What the dog saw", "Malcom", "Gladwell", 544864683546),
                 new Book("Pol pots leende", "Peter", "Fröberg Idling", 9789172320741),
@@ -15,7 +17,7 @@ namespace BookBooking
                 new Book("Brev från nollpunkten", "Peter", "Englund", 9174865463),
             };
 
-            List<UserAccount> users = new List<UserAccount>()
+            AccountManager.UserAccounts = new List<UserAccount>()
             {
                 new UserAccount("Daniel", "Johansson", "DanJoh", "asd123"),
                 new UserAccount("Edda", "Ranlund", "EddRan", "321dsa"),

@@ -30,7 +30,7 @@ namespace BookBooking
         public void CustomerMenu()
         {
             List<MenuItem> menuOptions = new List<MenuItem>() {
-                new MenuItem("Sök bok", new MenuItem.MethodToCallOnSelection(DefaultCustomerMenu)),
+                new MenuItem("Visa boklista", new MenuItem.MethodToCallOnSelection(ListOfBooks)),
                 new MenuItem("Visa kontoinformation", new MenuItem.MethodToCallOnSelection(DefaultCustomerMenu)),
                 new MenuItem("Logga ut", new MenuItem.MethodToCallOnSelection(LoginScreen)) };
             UIManager.OpenMenu(menuOptions);
@@ -46,6 +46,11 @@ namespace BookBooking
         {
             List<MenuItem> menuOptions = new List<MenuItem>() { new MenuItem("Gå tillbaka till föregående", new MenuItem.MethodToCallOnSelection(AdministratorMenu)) };
             UIManager.OpenMenu(menuOptions);
+        }
+
+        public void ListOfBooks()
+        {
+
         }
     }
 }

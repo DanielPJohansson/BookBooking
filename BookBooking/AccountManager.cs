@@ -8,6 +8,8 @@ namespace BookBooking
 {
     public class AccountManager
     {
+        public static List<UserAccount> UserAccounts { get; set; }
+
         public UserAccount CreateCustomerAccount()
         {
             return new UserAccount("", "", "", "");

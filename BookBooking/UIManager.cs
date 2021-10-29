@@ -9,11 +9,11 @@ namespace BookBooking
     public static class UIManager
     {
 
-        public static void OpenMenu(List<MenuItem> menuOptions)
+        public static void OpenMenu(List<MenuItem> itemsInMenu)
         {
             ResetScreen();
-            int selection = UIManager.NavigateInMenu(menuOptions);
-            menuOptions[selection].MethodToCall();
+            int selected = SelectionInMenu(itemsInMenu);
+            itemsInMenu[selected].MethodToCall();
         }
         private static void ResetScreen()
         {
@@ -21,7 +21,7 @@ namespace BookBooking
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.WriteLine("Välkommen till Litslenas bibliotek.");
         }
-        private static int NavigateInMenu(List<MenuItem> menuOptions)
+        private static int SelectionInMenu(List<MenuItem> menuOptions)
         {
             int selectedRow = 0;
             ConsoleKeyInfo pressedKey;
