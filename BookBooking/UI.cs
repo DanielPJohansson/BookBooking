@@ -10,47 +10,60 @@ namespace BookBooking
     {
         public void LoginScreen()
         {
-            List<MenuItem> menuOptions = new List<MenuItem>() {
-                new MenuItem("Logga in som kund", new MenuItem.MethodToCallOnSelection(CustomerMenu)),
-                new MenuItem("Logga in som administratör", new MenuItem.MethodToCallOnSelection(AdministratorMenu))};
+            List<IMenuItem> menuOptions = new List<IMenuItem>()
+            {
+                new MenuItem() {MenuItemText = "Logga in som kund",             MethodToCall = new IMenuItem.MethodToCallOnSelection(CustomerMenu) },
+                new MenuItem() {MenuItemText = "Logga in som administratör",    MethodToCall = new IMenuItem.MethodToCallOnSelection(AdministratorMenu) }
+            };
             UIManager.OpenMenu(menuOptions);
         }
 
         public void AdministratorMenu()
         {
-            List<MenuItem> menuOptions = new List<MenuItem>() { 
-                new MenuItem("Sök bok", new MenuItem.MethodToCallOnSelection(DefaultAdministratorMenu)),
-                new MenuItem("Visa utlånade böcker", new MenuItem.MethodToCallOnSelection(DefaultAdministratorMenu)),
-                new MenuItem("Hantera böcker", new MenuItem.MethodToCallOnSelection(DefaultAdministratorMenu)),
-                new MenuItem("Hantera användarkonton", new MenuItem.MethodToCallOnSelection(DefaultAdministratorMenu)),
-                new MenuItem("Logga ut", new MenuItem.MethodToCallOnSelection(LoginScreen)) };
+            List<IMenuItem> menuOptions = new List<IMenuItem>()
+            {
+                new MenuItem() {MenuItemText = "Visa boklista",                 MethodToCall = new IMenuItem.MethodToCallOnSelection(ListAllBooks) },
+                new MenuItem() {MenuItemText = "Visa utlånade böcker",          MethodToCall = new IMenuItem.MethodToCallOnSelection(DefaultAdministratorMenu) },
+                new MenuItem() {MenuItemText = "Hantera böcker",                MethodToCall = new IMenuItem.MethodToCallOnSelection(DefaultAdministratorMenu) },
+                new MenuItem() {MenuItemText = "Hantera användarkonton",        MethodToCall = new IMenuItem.MethodToCallOnSelection(DefaultAdministratorMenu) },
+                new MenuItem() {MenuItemText = "Logga ut",                      MethodToCall = new IMenuItem.MethodToCallOnSelection(LoginScreen) }
+            };
             UIManager.OpenMenu(menuOptions);
         }
 
         public void CustomerMenu()
         {
-            List<MenuItem> menuOptions = new List<MenuItem>() {
-                new MenuItem("Visa boklista", new MenuItem.MethodToCallOnSelection(ListOfBooks)),
-                new MenuItem("Visa kontoinformation", new MenuItem.MethodToCallOnSelection(DefaultCustomerMenu)),
-                new MenuItem("Logga ut", new MenuItem.MethodToCallOnSelection(LoginScreen)) };
+            List<IMenuItem> menuOptions = new List<IMenuItem>()
+            {
+                new MenuItem() {MenuItemText = "Visa boklista",                 MethodToCall = new IMenuItem.MethodToCallOnSelection(ListAllBooks) },
+                new MenuItem() {MenuItemText = "Visa kontoinformation",         MethodToCall = new IMenuItem.MethodToCallOnSelection(DefaultCustomerMenu) },
+                new MenuItem() {MenuItemText = "Logga ut",                      MethodToCall = new IMenuItem.MethodToCallOnSelection(LoginScreen) }
+            };
             UIManager.OpenMenu(menuOptions);
         }
 
         public void DefaultCustomerMenu()
         {
-            List<MenuItem> menuOptions = new List<MenuItem>() { new MenuItem("Gå tillbaka till föregående", new MenuItem.MethodToCallOnSelection(CustomerMenu)) };
+            List<IMenuItem> menuOptions = new List<IMenuItem>() 
+            { 
+                new MenuItem() { MenuItemText = "Gå tillbaka till föregående",  MethodToCall = new IMenuItem.MethodToCallOnSelection(CustomerMenu) } 
+            };
             UIManager.OpenMenu(menuOptions);
         }
 
         public void DefaultAdministratorMenu()
         {
-            List<MenuItem> menuOptions = new List<MenuItem>() { new MenuItem("Gå tillbaka till föregående", new MenuItem.MethodToCallOnSelection(AdministratorMenu)) };
+            List<IMenuItem> menuOptions = new List<IMenuItem>() 
+            { 
+                new MenuItem() { MenuItemText = "Gå tillbaka till föregående",  MethodToCall = new IMenuItem.MethodToCallOnSelection(AdministratorMenu) } 
+            };
             UIManager.OpenMenu(menuOptions);
         }
 
-        public void ListOfBooks()
+        public void ListAllBooks()
         {
-
+            List<IMenuItem> menuOptions = Library.Books.ToList<IMenuItem>();
+            UIManager.OpenMenu(menuOptions);
         }
     }
 }

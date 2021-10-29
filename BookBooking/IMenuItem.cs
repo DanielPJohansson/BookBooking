@@ -8,17 +8,10 @@ namespace BookBooking
 {
     public interface IMenuItem
     {
-
         public string MenuItemText { get; set; }
 
         public delegate void MethodToCallOnSelection();
 
         public MethodToCallOnSelection MethodToCall { get; set; }
-
-        //public MenuItem(string menuItemText, MethodToCallOnSelection methodToCall)
-        //{
-        //    MenuItemText = menuItemText;
-        //    MethodToCall = methodToCall;
-        //}
     }
 }

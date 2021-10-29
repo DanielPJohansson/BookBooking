@@ -8,20 +8,14 @@ namespace BookBooking
 {
     public static class UIManager
     {
-
-        public static void OpenMenu(List<MenuItem> itemsInMenu)
+        public static void OpenMenu(List<IMenuItem> itemsInMenu)
         {
             ResetScreen();
-            int selected = SelectionInMenu(itemsInMenu);
+            int selected = SelectInMenu(itemsInMenu);
             itemsInMenu[selected].MethodToCall();
         }
-        private static void ResetScreen()
-        {
-            Console.Clear();
-            Console.ForegroundColor = ConsoleColor.Gray;
-            Console.WriteLine("Välkommen till Litslenas bibliotek.");
-        }
-        private static int SelectionInMenu(List<MenuItem> menuOptions)
+
+        private static int SelectInMenu(List<IMenuItem> menuOptions)
         {
             int selectedRow = 0;
             ConsoleKeyInfo pressedKey;
@@ -36,17 +30,8 @@ namespace BookBooking
 
             return selectedRow;
         }
-        private static void RenderMenu(List<MenuItem> menuOptions, int selectedRow)
-        {
-            Console.SetCursorPosition(0, 2);
-            for (int i = 0; i < menuOptions.Count; i++)
-            {
-                Console.ForegroundColor = (selectedRow == i) ? ConsoleColor.Green : ConsoleColor.White;
-                Console.WriteLine($"{i + 1}. {menuOptions[i].MenuItemText}");
-            }
-        }
 
-        private static int ChangeSelectedRow(List<MenuItem> menuOptions, ref int selectedRow, ConsoleKeyInfo pressedKey)
+        private static int ChangeSelectedRow(List<IMenuItem> menuOptions, ref int selectedRow, ConsoleKeyInfo pressedKey)
         {
             if (pressedKey.Key == ConsoleKey.UpArrow && selectedRow > 0)
             {
@@ -58,6 +43,23 @@ namespace BookBooking
             }
 
             return selectedRow;
+        }
+
+        private static void ResetScreen()
+        {
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.WriteLine("Välkommen till Litslenas bibliotek.");
+        }
+
+        private static void RenderMenu(List<IMenuItem> menuOptions, int selectedRow)
+        {
+            Console.SetCursorPosition(0, 2);
+            for (int i = 0; i < menuOptions.Count; i++)
+            {
+                Console.ForegroundColor = (selectedRow == i) ? ConsoleColor.Green : ConsoleColor.White;
+                Console.WriteLine($"{i + 1}. {menuOptions[i].MenuItemText}");
+            }
         }
     }
 }

@@ -5,7 +5,7 @@ namespace BookBooking
 {
     class Program
     {
-        
+
 
         static void Main(string[] args)
         {
@@ -15,13 +15,29 @@ namespace BookBooking
                 new Book("Pol pots leende", "Peter", "Fröberg Idling", 9789172320741),
                 new Book("Ängeln i Groznyj", "Åsne", "Seierstad", 9789100121945),
                 new Book("Brev från nollpunkten", "Peter", "Englund", 9174865463),
+                new Book("What the dog saw", "Malcom", "Gladwell", 544864683546),
+                new Book("Pol pots leende", "Peter", "Fröberg Idling", 9789172320741),
+                new Book("Ängeln i Groznyj", "Åsne", "Seierstad", 9789100121945),
+                new Book("Brev från nollpunkten", "Peter", "Englund", 9174865463),
+                new Book("What the dog saw", "Malcom", "Gladwell", 544864683546),
+                new Book("Pol pots leende", "Peter", "Fröberg Idling", 9789172320741),
+                new Book("Ängeln i Groznyj", "Åsne", "Seierstad", 9789100121945),
+                new Book("Brev från nollpunkten", "Peter", "Englund", 9174865463),
+                new Book("What the dog saw", "Malcom", "Gladwell", 544864683546),
+                new Book("Pol pots leende", "Peter", "Fröberg Idling", 9789172320741),
+                new Book("Ängeln i Groznyj", "Åsne", "Seierstad", 9789100121945),
+                new Book("Brev från nollpunkten", "Peter", "Englund", 9174865463)
             };
 
             AccountManager.UserAccounts = new List<UserAccount>()
             {
-                new UserAccount("Daniel", "Johansson", "DanJoh", "asd123"),
-                new UserAccount("Edda", "Ranlund", "EddRan", "321dsa"),
+                new AdministratorAccount("Daniel", "Johansson", "DanJoh", "asd123"),
+                new CustomerAccount("Edda", "Ranlund", "EddRan", "321dsa")
             };
+
+            Book book = new("Ängeln i Groznyj", "Åsne", "Seierstad", 9789100121945);
+
+            book.Lend();
 
             /*
              * Om ingen inloggning gjorts tidigare skapas ett adminkonto
