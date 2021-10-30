@@ -9,7 +9,6 @@ namespace BookBooking
     public class AccountManager
     {
         public static List<UserAccount> UserAccounts { get; set; }
-        public static UserAccount CurrentUser { get; set; }
 
         public UserAccount CreateCustomerAccount()
         {
@@ -25,6 +24,11 @@ namespace BookBooking
         public string GenerateUserName()
         {
             throw new NotImplementedException();
+        }
+
+        public void Login()
+        {
+
         }
     }
 }

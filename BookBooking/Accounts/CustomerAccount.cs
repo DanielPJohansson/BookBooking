@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace BookBooking
 {
-    class CustomerAccount: UserAccount
+    public class CustomerAccount: UserAccount
     {
-        public List<Book> CurrentlyLendedBooks { get; set; }
-
+        public List<ILendable> CurrentLoans { get; set; } = new();
         public CustomerAccount(string firstName, string lastName, string userName, string Password)
         {
             FirstName = firstName;

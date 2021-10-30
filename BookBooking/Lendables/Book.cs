@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BookBooking
 {
-    public class Book : IMenuItem
+    public class Book : Lendable,IMenuItem, ILendable
     {
         public string Title { get; set; }
         public string AuthorFirstName { get; set; }
@@ -15,7 +15,8 @@ namespace BookBooking
         public int YearPrinted { get; set; }
         public long Isbn { get; set; }
         public string MenuItemText { get; set; }
-        public IMenuItem.MethodToCallOnSelection MethodToCall { get; set; }
+        public IMenuItem.MethodToCallOnSelection MethodCalledOnSelection { get; set; }
+        public UserAccount CurrentlyBorrowedBy { get; set; }
 
         public Book(string title, string authorFirstName, string authorLastName, long isbn)
         {
@@ -24,7 +25,7 @@ namespace BookBooking
             AuthorLastName = authorLastName;
             Isbn = isbn;
             MenuItemText = $"{Title}. {AuthorFirstName} {AuthorLastName}";
-            MethodToCall = new IMenuItem.MethodToCallOnSelection(DisplayInformation);
+            MethodCalledOnSelection = new IMenuItem.MethodToCallOnSelection(DisplayInformation);
         }
 
         private void DisplayInformation()
@@ -37,9 +38,5 @@ namespace BookBooking
 
         }
 
-        public void Lend()
-        {
-
-        }
     }
 }
