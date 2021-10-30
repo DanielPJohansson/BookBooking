@@ -37,13 +37,21 @@ namespace BookBooking
 
         public void CustomerMenu()
         {
+            //Menu menu = new Menu(new List<IMenuItem>()
+            //{
+            //    new MenuItem() {MenuItemText = "Visa bibliotekets boklista",    MethodCalledOnSelection = new IMenuItem.MethodToCallOnSelection(ListAllBooks) },
+            //    new MenuItem() {MenuItemText = "Visa nuvarande lån",            MethodCalledOnSelection = new IMenuItem.MethodToCallOnSelection(ListUsersCurrentLoans) },
+            //},
+            //    new MenuItem() {MenuItemText = "Logga ut",                      MethodCalledOnSelection = new IMenuItem.MethodToCallOnSelection(LoginScreen) }
+            //);
+
             List<IMenuItem> menuOptions = new List<IMenuItem>()
             {
                 new MenuItem() {MenuItemText = "Visa bibliotekets boklista",    MethodCalledOnSelection = new IMenuItem.MethodToCallOnSelection(ListAllBooks) },
                 new MenuItem() {MenuItemText = "Visa nuvarande lån",            MethodCalledOnSelection = new IMenuItem.MethodToCallOnSelection(ListUsersCurrentLoans) },
                 new MenuItem() {MenuItemText = "Logga ut",                      MethodCalledOnSelection = new IMenuItem.MethodToCallOnSelection(LoginScreen) }
             };
-            MenuNavigator.OpenMenu(menuOptions);
+            //MenuNavigator.OpenMenu(menuOptions);
         }
 
         public void DefaultCustomerMenu()
