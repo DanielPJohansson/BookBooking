@@ -13,10 +13,10 @@ namespace BookBooking
 
         public void Login()
         {
-            UI ui = new UI(this);
+            //UI ui = new UI(this);
             AccountManager accountManager = new();
 
-            UIManager.ResetScreen();
+            UIRenderer.ResetScreen();
             Console.SetCursorPosition(0, 2);
             Console.Write("Användarnamn: ");
             string input = Console.ReadLine();
@@ -25,12 +25,14 @@ namespace BookBooking
 
             if (CurrentUser is AdministratorAccount)
             {
-                ui.AdministratorMenu();
+                AdministratorUI ui = new AdministratorUI(this);
+                ui.MainMenu();
             }
             else if(CurrentUser is CustomerAccount)
             {
                 LoanManager = new LoanManager(CurrentUser as CustomerAccount);
-                ui.CustomerMenu();
+                CustomerUI ui = new CustomerUI(this);
+                ui.MainMenu();
             }
         }
     }

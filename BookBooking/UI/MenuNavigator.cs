@@ -8,19 +8,18 @@ namespace BookBooking
 {
     public static class MenuNavigator
     {
-        public static void OpenMenu(List<IMenuItem> itemsInMenu)
+        public static void OpenMenu(Menu menu)
         {
-            UIManager.ResetScreen();
-            int selected = SelectInMenu(itemsInMenu);
-            itemsInMenu[selected].MethodCalledOnSelection();
+            UIRenderer.ResetScreen();
+            int selected = SelectInMenu(menu.Content);
+            menu.Content[selected].MethodCalledOnSelection();
         }
-
-        public static void OpenMenuAndReturnSelected(List<IMenuItem> itemsInMenu, ref IMenuItem selectedItem)
+        public static void OpenMenuAndReturnSelected(Menu menu, ref IMenuItem selectedItem)
         {
-            UIManager.ResetScreen();
-            int selected = SelectInMenu(itemsInMenu);
-            selectedItem = itemsInMenu[selected];
-            itemsInMenu[selected].MethodCalledOnSelection();
+            UIRenderer.ResetScreen();
+            int selected = SelectInMenu(menu.Content);
+            selectedItem = menu.Content[selected];
+            menu.Content[selected].MethodCalledOnSelection();
         }
 
         private static int SelectInMenu(List<IMenuItem> menuOptions)
@@ -30,7 +29,7 @@ namespace BookBooking
 
             do
             {
-                RenderMenu(menuOptions, selectedRow);
+                UIRenderer.RenderMenu(menuOptions, selectedRow);
                 pressedKey = Console.ReadKey(true);
                 ChangeSelectedRow(menuOptions, ref selectedRow, pressedKey);
             }
@@ -51,16 +50,6 @@ namespace BookBooking
             }
 
             return selectedRow;
-        }
-
-        private static void RenderMenu(List<IMenuItem> menuOptions, int selectedRow)
-        {
-            Console.SetCursorPosition(0, 2);
-            for (int i = 0; i < menuOptions.Count; i++)
-            {
-                Console.ForegroundColor = (selectedRow == i) ? ConsoleColor.Green : ConsoleColor.Gray;
-                Console.WriteLine($"{i + 1}. {menuOptions[i].MenuItemText}");
-            }
         }
     }
 }
