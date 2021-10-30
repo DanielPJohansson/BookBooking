@@ -5,6 +5,7 @@ namespace BookBooking
 {
     class Program
     {
+        
 
         static void Main(string[] args)
         {
@@ -22,12 +23,32 @@ namespace BookBooking
             AccountManager.UserAccounts = new List<UserAccount>()
             {
                 new AdministratorAccount("Daniel", "Johansson", "DanJoh", "asd123"),
-                new CustomerAccount("Edda", "Ranlund", "EddRan", "321dsa")
+                new CustomerAccount("Edda", "Ranlund", "EddRan", "321dsa"),
             };
 
-            UserSession session = new();
+            /*
+             * Om ingen inloggning gjorts tidigare skapas ett adminkonto
+             * Annars inloggning
+             * 
+             * Gå till relevant meny
+             * 
+             * Kund:
+             * -Sök bok
+             * -Välj bok
+             * -Se status för bok
+             * -Låna eller reservera
+             * 
+             * Admin
+             * -Lägg till bok
+             * -Sök bok
+             * -Välj bok
+             * -Se status för bok
+             * -Ta bort bok ur system
+             */
 
+            UserSession session = new();
             session.Login();
+
         }
     }
 }

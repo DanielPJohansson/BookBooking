@@ -9,5 +9,7 @@ namespace BookBooking
     public abstract class Lendable
     {
         public UserAccount CurrentlyBorrowedBy { get; set; }
+        public DateTime LoanDate { get; set; }
+        public DateTime LastReturnDate { get; set; }
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BookBooking
 {
-    public class Book : Lendable,IMenuItem, ILendable
+    public class Book : Lendable, IMenuItem, ILendable
     {
         public string Title { get; set; }
         public string AuthorFirstName { get; set; }
@@ -25,18 +25,6 @@ namespace BookBooking
             AuthorLastName = authorLastName;
             Isbn = isbn;
             MenuItemText = $"{Title}. {AuthorFirstName} {AuthorLastName}";
-            MethodCalledOnSelection = new IMenuItem.MethodToCallOnSelection(DisplayInformation);
         }
-
-        private void DisplayInformation()
-        {
-            Console.WriteLine("Hepp!");
-        }
-
-        public void MakeReservation()
-        {
-
-        }
-
     }
 }
