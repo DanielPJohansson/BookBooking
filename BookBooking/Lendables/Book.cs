@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BookBooking
 {
-    public class Book : Lendable, IMenuItem, ILendable
+    public class Book : ILendable
     {
         public string Title { get; set; }
         public string AuthorFirstName { get; set; }

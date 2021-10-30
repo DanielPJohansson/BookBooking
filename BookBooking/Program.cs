@@ -9,7 +9,7 @@ namespace BookBooking
 
         static void Main(string[] args)
         {
-            Library.Books = new List<Book>()
+            Library.Inventory = new List<ILendable>()
             {
                 new Book("What the dog saw", "Malcom", "Gladwell", 544864683546),
                 new Book("Pol pots leende", "Peter", "Fröberg Idling", 9789172320741),

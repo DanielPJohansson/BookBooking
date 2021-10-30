@@ -66,7 +66,7 @@ namespace BookBooking
 
         public void ListAllBooks()
         {
-            List<IMenuItem> menuOptions = Library.Books.ToList<IMenuItem>();
+            List<IMenuItem> menuOptions = Library.Inventory.ToList<IMenuItem>();
             foreach (IMenuItem item in menuOptions)
             {
                 item.MethodCalledOnSelection = new IMenuItem.MethodToCallOnSelection(LendableMenu);
@@ -104,7 +104,7 @@ namespace BookBooking
 
         public void ListUsersCurrentLoans()
         {
-            List<IMenuItem> menuOptions = (List<IMenuItem>)(IMenuItem)(Session.CurrentUser as CustomerAccount).CurrentLoans;
+            List<IMenuItem> menuOptions = (Session.CurrentUser as CustomerAccount).CurrentLoans.ToList<IMenuItem>();
             foreach (IMenuItem item in menuOptions)
             {
                 item.MethodCalledOnSelection = new IMenuItem.MethodToCallOnSelection(CustomerMenu);

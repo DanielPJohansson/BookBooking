@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BookBooking
 {
-    public interface ILendable
+    public interface ILendable : IMenuItem
     {
         public UserAccount CurrentlyBorrowedBy { get; set; }
     }
