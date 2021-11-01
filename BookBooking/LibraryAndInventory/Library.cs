@@ -9,9 +9,17 @@ namespace BookBooking
    
     public class Library
     {
-        public static List<ILendable> Inventory { get; set; }
+        public List<ILendable> LendablesInInventory { get; set; } = new();
+
+        public List<ILendable> LendablesRemovedFromInventory { get; set; } = new();
+
         public string Name { get; set; }
         public string Address { get; set; }
+
+        public Library()
+        {
+
+        }
 
         public Library(string name, string address)
         {

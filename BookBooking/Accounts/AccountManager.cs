@@ -8,27 +8,22 @@ namespace BookBooking
 {
     public class AccountManager
     {
-        public static List<UserAccount> UserAccounts { get; set; }
+        public List<BaseUserAccount> UserAccounts { get; set; }
 
-        public UserAccount CreateCustomerAccount()
+        public BaseUserAccount CreateCustomerAccount()
         {
-            return new CustomerAccount("", "", "", "");
+            return new BaseUserAccount("", "", "", "");
         }
 
-        public UserAccount CreateAdministratorAccount()
+        public BaseUserAccount CreateAdministratorAccount()
         {
-            UserAccount administrator = new AdministratorAccount("", "", "", "");
+            BaseUserAccount administrator = new AdministratorAccount("", "", "", "");
             return administrator;
         }
 
         public string GenerateUserName()
         {
             throw new NotImplementedException();
-        }
-
-        public void Login()
-        {
-
         }
     }
 }

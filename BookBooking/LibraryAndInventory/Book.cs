@@ -16,7 +16,7 @@ namespace BookBooking
         public long Isbn { get; set; }
         public string MenuItemText { get; set; }
         public IMenuItem.MethodToCallOnSelection MethodCalledOnSelection { get; set; }
-        public UserAccount CurrentlyBorrowedBy { get; set; }
+        public BaseUserAccount CurrentlyBorrowedBy { get; set; }
 
         public Book(string title, string authorFirstName, string authorLastName, long isbn)
         {

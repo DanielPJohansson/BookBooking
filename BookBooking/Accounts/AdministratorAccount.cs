@@ -6,12 +6,10 @@ using System.Threading.Tasks;
 
 namespace BookBooking
 {
-    class AdministratorAccount : UserAccount
+    class AdministratorAccount : BaseUserAccount
     {
-        public AdministratorAccount(string firstName, string lastName, string userName, string Password)
+        public AdministratorAccount(string firstName, string lastName, string userName, string password) : base(firstName, lastName, userName, password)
         {
-            FirstName = firstName;
-            LastName = lastName;
             IsAdmin = true;
         }
     }
