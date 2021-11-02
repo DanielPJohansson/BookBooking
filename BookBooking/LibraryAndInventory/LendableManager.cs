@@ -32,7 +32,11 @@ namespace BookBooking
 
         public void RemoveLendable(ILendable lendable)
         {
-            Return(lendable);
+            if (lendable.CurrentlyBorrowedBy != null)
+            {
+                Return(lendable);
+            }
+            lendable.IsArchived = true;
             Session.Library.LendablesInInventory.Remove(lendable);
             Session.Library.LendablesRemovedFromInventory.Add(lendable);
         }

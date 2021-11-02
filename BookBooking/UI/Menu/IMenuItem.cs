@@ -10,8 +10,8 @@ namespace BookBooking
     {
         public string MenuItemText { get; set; }
 
-        public delegate void MethodToCallOnSelection();
-        public MethodToCallOnSelection MethodCalledOnSelection { get; set; }
+        //public delegate void MethodToCallOnSelection();
+        //public MethodToCallOnSelection MethodCalledOnSelection { get; set; }
 
         //TODO add a display information method. Can be used to display book information
     }

@@ -8,21 +8,28 @@ namespace BookBooking
 {
     public static class MenuNavigator
     {
-        public static void OpenMenu(Menu menu)
+        //public static void OpenMenu(Menu menu)
+        //{
+        //    UIRenderer.ResetScreen();
+        //    int selected = SelectInMenu(menu.Content);
+        //    menu.Content[selected].MethodCalledOnSelection();
+        //}
+        //public static void OpenMenuAndReturnSelected(Menu menu, ref MenuItem selectedItem)
+        //{
+        //    UIRenderer.ResetScreen();
+        //    int selected = SelectInMenu(menu.Content);
+        //    selectedItem = menu.Content[selected];
+        //    menu.Content[selected].MethodCalledOnSelection();
+        //}
+
+        public static int OpenMenuAndReturnIndexOfSelected(Menu menu)
         {
             UIRenderer.ResetScreen();
             int selected = SelectInMenu(menu.Content);
-            menu.Content[selected].MethodCalledOnSelection();
-        }
-        public static void OpenMenuAndReturnSelected(Menu menu, ref IMenuItem selectedItem)
-        {
-            UIRenderer.ResetScreen();
-            int selected = SelectInMenu(menu.Content);
-            selectedItem = menu.Content[selected];
-            menu.Content[selected].MethodCalledOnSelection();
+            return selected;
         }
 
-        private static int SelectInMenu(List<IMenuItem> menuOptions)
+        private static int SelectInMenu(List<MenuItem> menuOptions)
         {
             int selectedRow = 0;
             ConsoleKeyInfo pressedKey;
@@ -38,7 +45,7 @@ namespace BookBooking
             return selectedRow;
         }
 
-        private static int ChangeSelectedRow(List<IMenuItem> menuOptions, ref int selectedRow, ConsoleKeyInfo pressedKey)
+        private static int ChangeSelectedRow(List<MenuItem> menuOptions, ref int selectedRow, ConsoleKeyInfo pressedKey)
         {
             if (pressedKey.Key == ConsoleKey.UpArrow && selectedRow > 0)
             {

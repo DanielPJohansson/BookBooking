@@ -11,6 +11,6 @@ namespace BookBooking
         public string MenuItemText { get; set; }
 
         public delegate void MethodToCallOnSelection();
-        public IMenuItem.MethodToCallOnSelection MethodCalledOnSelection { get; set; }
+        public MethodToCallOnSelection MethodCalledOnSelection { get; set; }
     }
 }

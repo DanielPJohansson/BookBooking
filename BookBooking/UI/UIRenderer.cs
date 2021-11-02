@@ -15,7 +15,7 @@ namespace BookBooking
             Console.WriteLine("Välkommen till Litslenas bibliotek.");
         }
 
-        public static void RenderMenu(List<IMenuItem> menuOptions, int selectedRow)
+        public static void RenderMenu(List<MenuItem> menuOptions, int selectedRow)
         {
             Console.SetCursorPosition(0, 2);
             for (int i = 0; i < menuOptions.Count; i++)

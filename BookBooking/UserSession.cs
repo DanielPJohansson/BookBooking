@@ -99,15 +99,15 @@ namespace BookBooking
         }
         public void SaveData()
         {
-            string jsonStringLibrary = JsonConvert.SerializeObject(Library, Formatting.Indented);
-            //string jsonStringLibrary = JsonSerializer.Serialize(Library);
-            Console.WriteLine(jsonStringLibrary);
-            string jsonStringAccounts = JsonConvert.SerializeObject(AccountManager.UserAccounts, Formatting.Indented);
-            Console.WriteLine(jsonStringAccounts);
-            File.WriteAllText("library.json", jsonStringLibrary);
-            File.WriteAllText("accounts.json", jsonStringAccounts);
-            Console.WriteLine("Data saved");
-            Console.ReadKey();
+            //string jsonStringLibrary = JsonConvert.SerializeObject(Library, Formatting.Indented);
+            ////string jsonStringLibrary = JsonSerializer.Serialize(Library);
+            //Console.WriteLine(jsonStringLibrary);
+            //string jsonStringAccounts = JsonConvert.SerializeObject(AccountManager.UserAccounts, Formatting.Indented);
+            //Console.WriteLine(jsonStringAccounts);
+            //File.WriteAllText("library.json", jsonStringLibrary);
+            //File.WriteAllText("accounts.json", jsonStringAccounts);
+            //Console.WriteLine("Data saved");
+            //Console.ReadKey();
         }
 
     }
