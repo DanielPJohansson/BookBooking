@@ -19,14 +19,13 @@ namespace BookBooking
         {
             if (borrowedItem.CurrentlyBorrowedBy == null)
             {
-                Session.User.CurrentLoans.Add(borrowedItem);
                 borrowedItem.CurrentlyBorrowedBy = Session.User;
+                borrowedItem.DateOfLoan = DateTime.Now;
             }
         }
 
         public void Return(ILendable borrowedItem)
         {
-            borrowedItem.CurrentlyBorrowedBy.CurrentLoans.Remove(borrowedItem);
             borrowedItem.CurrentlyBorrowedBy = null;
         }
 
@@ -36,9 +35,24 @@ namespace BookBooking
             {
                 Return(lendable);
             }
-            lendable.IsArchived = true;
             Session.Library.LendablesInInventory.Remove(lendable);
             Session.Library.LendablesRemovedFromInventory.Add(lendable);
+        }
+
+        public Book CreateNewBook()
+        {
+            UIRenderer.ResetScreen();
+            int yPos = 3;
+            string title = InputManager.RequestUnrestrictedInput("Bokens titel: ", yPos);
+            string authorFirstName = InputManager.RequestNameInput("Författarens förnamn: ", ++yPos);
+            string authorLastName = InputManager.RequestNameInput("Författarens efternamn: ", ++yPos);
+            int yearPublished = InputManager.RequestYearInput("Utgivningsår: ", ++yPos);
+
+            UIRenderer.DisplayText("Ny bok tillagd. Tryck på valfri tangent för att fortsätta", yPos: yPos + 2, maxWidth: 100);
+            Console.ReadKey();
+            UIRenderer.ResetScreen();
+
+            return new Book(title, authorFirstName, authorLastName, yearPublished);
         }
     }
 }

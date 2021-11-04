@@ -12,5 +12,10 @@ namespace BookBooking
 
         public delegate void MethodToCallOnSelection();
         public MethodToCallOnSelection MethodCalledOnSelection { get; set; }
+
+        public List<string> DisplayInformation()
+        {
+            return new List<string>();
+        }
     }
 }

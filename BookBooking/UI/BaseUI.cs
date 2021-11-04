@@ -17,8 +17,8 @@ namespace BookBooking
 
         public virtual void MainMenu()
         {
-            List<MenuItem> menuOptions = new(); 
-            
+            List<MenuItem> menuOptions = new();
+
             AddBaseOptionsToMainMenu(menuOptions);
 
             MenuItem exitOption = AddExitOption("Logga ut", new MenuItem.MethodToCallOnSelection(LogOut));
@@ -40,8 +40,10 @@ namespace BookBooking
 
         private void ListUsersCurrentLoans()
         {
-            List<IMenuItem> currentLoans = Session.User.CurrentLoans.ToList<IMenuItem>();
-
+            List<IMenuItem> currentLoans = new();
+            currentLoans.AddRange(Session.Library.LendablesInInventory.Where(lendable => lendable.CurrentlyBorrowedBy == Session.User)
+                                                .Select(lendable => lendable as IMenuItem)
+                                                .ToList());
             OpenMenuBasedOnList(currentLoans, new MenuItem.MethodToCallOnSelection(LendableMenu), new MenuItem.MethodToCallOnSelection(MainMenu));
         }
 
@@ -49,7 +51,6 @@ namespace BookBooking
         {
             List<MenuItem> menuOptions = new List<MenuItem>();
             AddBaseOptionsToLendableMenu(menuOptions);
-
             MenuItem exitOption = AddExitOption("Tillbaka", new MenuItem.MethodToCallOnSelection(ListAllLendables));
 
             SelectInMenu(menuOptions, exitOption);
@@ -85,13 +86,19 @@ namespace BookBooking
             SelectInMenu(menuOptions, exitOption, itemList);
         }
 
-        public void SelectInMenu( List<MenuItem> menuOptions, MenuItem exitOption, List<IMenuItem> itemList = null)
+        public void SelectInMenu(List<MenuItem> menuOptions, MenuItem exitOption, List<IMenuItem> itemList = null)
         {
             int selection = MenuNavigator.OpenMenuAndReturnIndexOfSelected(new Menu(menuOptions, exitOption));
 
             if (itemList != null && selection < itemList.Count)
             {
                 selectedItem = itemList[selection];
+                UIRenderer.ClearInformationDisplay();
+                UIRenderer.DisplayStringList(selectedItem.DisplayInformation(), xPos: 50, yPos: 4);
+            }
+            else
+            {
+                UIRenderer.ResetScreen();
             }
 
             menuOptions[selection].MethodCalledOnSelection();
@@ -116,7 +123,7 @@ namespace BookBooking
         {
             Session.SaveData();
             Session.User = null;
-            Session.Login();
+            Session.Start();
         }
         public void DefaultMenu()
         {

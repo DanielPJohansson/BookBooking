@@ -8,23 +8,10 @@ namespace BookBooking
 {
     public static class MenuNavigator
     {
-        //public static void OpenMenu(Menu menu)
-        //{
-        //    UIRenderer.ResetScreen();
-        //    int selected = SelectInMenu(menu.Content);
-        //    menu.Content[selected].MethodCalledOnSelection();
-        //}
-        //public static void OpenMenuAndReturnSelected(Menu menu, ref MenuItem selectedItem)
-        //{
-        //    UIRenderer.ResetScreen();
-        //    int selected = SelectInMenu(menu.Content);
-        //    selectedItem = menu.Content[selected];
-        //    menu.Content[selected].MethodCalledOnSelection();
-        //}
 
         public static int OpenMenuAndReturnIndexOfSelected(Menu menu)
         {
-            UIRenderer.ResetScreen();
+            UIRenderer.ClearArea(yPos: 3, width: 50);
             int selected = SelectInMenu(menu.Content);
             return selected;
         }

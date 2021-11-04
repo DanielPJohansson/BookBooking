@@ -9,10 +9,11 @@ namespace BookBooking
     public interface ILendable : IMenuItem
     {
         public string Title { get; set; }
-        public bool IsArchived { get; set; }
-        public BaseUserAccount CurrentlyBorrowedBy { get; set; }
-        //public DateTime StartTimeOfLoan { get; set; }
-        //public DateTime LastReturnDate { get; set; }
+        public DateTime DateOfLoan { get; set; }
+        public DateTime LastReturnDate { get; set; }
+        public IAccount CurrentlyBorrowedBy { get; set; }
+
+        
     }
 }
 

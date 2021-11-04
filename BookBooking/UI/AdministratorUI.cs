@@ -14,13 +14,13 @@ namespace BookBooking
 
         public override void MainMenu()
         {
-            List<MenuItem> menuOptions = new(); 
-            
+            List<MenuItem> menuOptions = new();
+
             AddBaseOptionsToMainMenu(menuOptions);
 
             menuOptions.Add(new MenuItem() { MenuItemText = "Visa utlånade böcker", MethodCalledOnSelection = new MenuItem.MethodToCallOnSelection(ListAllCurrentlyBorrowedLendables) });
-            //menuOptions.Add(new MenuItem() { MenuItemText = "Visa borttagna böcker", MethodCalledOnSelection = new MenuItem.MethodToCallOnSelection(ListAllRemovedLendables) });
-            menuOptions.Add(new MenuItem() { MenuItemText = "Lägg till ny bok", MethodCalledOnSelection = new MenuItem.MethodToCallOnSelection(DefaultMenu) });
+            menuOptions.Add(new MenuItem() { MenuItemText = "Visa borttagna böcker", MethodCalledOnSelection = new MenuItem.MethodToCallOnSelection(ListAllRemovedLendables) });
+            menuOptions.Add(new MenuItem() { MenuItemText = "Lägg till ny bok", MethodCalledOnSelection = new MenuItem.MethodToCallOnSelection(AddNewLendable) });
             menuOptions.Add(new MenuItem() { MenuItemText = "Hantera användarkonton", MethodCalledOnSelection = new MenuItem.MethodToCallOnSelection(DefaultMenu) });
 
             MenuItem exitOption = AddExitOption("Logga ut", new MenuItem.MethodToCallOnSelection(LogOut));
@@ -37,23 +37,36 @@ namespace BookBooking
             OpenMenuBasedOnList(currentlyBorrowed, new MenuItem.MethodToCallOnSelection(LendableMenu), new MenuItem.MethodToCallOnSelection(MainMenu));
         }
 
-        //public void ListAllRemovedLendables()
-        //{
-        //    List<IMenuItem> removedLendables = new List<IMenuItem>(Session.Library.LendablesRemovedFromInventory);
+        public void ListAllRemovedLendables()
+        {
+            List<IMenuItem> removedLendables = new List<IMenuItem>(Session.Library.LendablesRemovedFromInventory);
 
-        //    OpenMenuBasedOnList(removedLendables, new MenuItem.MethodToCallOnSelection(MainMenu), new MenuItem.MethodToCallOnSelection(MainMenu));
-        //}
+            OpenMenuBasedOnList(removedLendables, new MenuItem.MethodToCallOnSelection(ArchivedLendableMenu), new MenuItem.MethodToCallOnSelection(MainMenu));
+        }
+
+        public void AddNewLendable()
+        {
+            
+            Session.Library.LendablesInInventory.Add(Session.LendableManager.CreateNewBook());
+            MainMenu();
+        }
 
         public override void LendableMenu()
         {
-            List<MenuItem> menuOptions = new List<MenuItem>()
-            {
-                new MenuItem() { MenuItemText = "Hantera bok", MethodCalledOnSelection = new MenuItem.MethodToCallOnSelection(EditSelectedLendable) }
-            };
+            List<MenuItem> menuOptions = new();
 
+            menuOptions.Add(new MenuItem() { MenuItemText = "Hantera bok", MethodCalledOnSelection = new MenuItem.MethodToCallOnSelection(EditSelectedLendable) });
             AddBaseOptionsToLendableMenu(menuOptions);
-
             MenuItem exitOption = AddExitOption("Tillbaka", new MenuItem.MethodToCallOnSelection(ListAllLendables));
+
+            SelectInMenu(menuOptions, exitOption);
+        }
+
+        public void ArchivedLendableMenu()
+        {
+            List<MenuItem> menuOptions = new();
+
+            MenuItem exitOption = AddExitOption("Tillbaka", new MenuItem.MethodToCallOnSelection(ListAllRemovedLendables));
 
             SelectInMenu(menuOptions, exitOption);
         }

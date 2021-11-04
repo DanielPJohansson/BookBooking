@@ -10,6 +10,7 @@ namespace BookBooking
     {
         public string MenuItemText { get; set; }
 
+        public List<string> DisplayInformation();
         //public delegate void MethodToCallOnSelection();
         //public MethodToCallOnSelection MethodCalledOnSelection { get; set; }
 
