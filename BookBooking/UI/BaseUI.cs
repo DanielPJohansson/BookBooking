@@ -32,6 +32,8 @@ namespace BookBooking
             menuOptions.Add(new MenuOption() { MenuItemText = "Visa bibliotekets boklista", MethodCalledOnSelection = new MenuOption.MethodToCallOnSelection(ListAllLendables) });
             menuOptions.Add(new MenuOption() { MenuItemText = "Visa dina nuvarande lån", MethodCalledOnSelection = new MenuOption.MethodToCallOnSelection(ListUsersCurrentLoans) });
         }
+
+        #region Lendable menus
         public void ListAllLendables()
         {
             List<IListableAsMenu> lenadables = new List<IListableAsMenu>(Session.Library.LendablesInInventory);
@@ -71,17 +73,19 @@ namespace BookBooking
 
         public void BorrowSelectedLendable()
         {
-            Session.LendableManager.Borrow(selectedItem as ILendable);
+            Session.InventoryManager.Borrow(selectedItem as ILendable);
         }
 
         public void ReturnSelectedLendable()
         {
-            Session.LendableManager.Return(selectedItem as ILendable);
+            Session.InventoryManager.Return(selectedItem as ILendable);
         }
+        #endregion
 
-        public void OpenMenuBasedOnList(List<IListableAsMenu> itemList, MenuOption.MethodToCallOnSelection methodToCallOnSelection, MenuOption.MethodToCallOnSelection returnToOnExit)
+        #region General UI methods
+        public void OpenMenuBasedOnList(List<IListableAsMenu> itemList, MenuOption.MethodToCallOnSelection methodToCallOnSelectionOfItem, MenuOption.MethodToCallOnSelection returnToOnExit)
         {
-            List<MenuOption> menuOptions = GenerateMenuOptionsFromList(itemList, methodToCallOnSelection);
+            List<MenuOption> menuOptions = GenerateMenuOptionsFromList(itemList, methodToCallOnSelectionOfItem);
 
             MenuOption exitOption = AddExitOption("Tillbaka", returnToOnExit);
             UIRenderer.ResetScreen();
@@ -145,6 +149,7 @@ namespace BookBooking
             Session.User = null;
             Session.Start();
         }
+
         public void DefaultMenu()
         {
             List<MenuOption> menuOptions = new List<MenuOption>();
@@ -154,5 +159,6 @@ namespace BookBooking
             UIRenderer.ResetScreen();
             SelectInMenu(menuOptions, exitOption);
         }
+        #endregion
     }
 }

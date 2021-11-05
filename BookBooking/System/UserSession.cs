@@ -10,7 +10,7 @@ namespace BookBooking
     public class UserSession
     {
         public IAccount User { get; set; }
-        public InventoryManager LendableManager { get; set; }
+        public InventoryManager InventoryManager { get; set; }
         public Library Library { get; set; }
         public AccountManager AccountManager { get; set; }
 
@@ -18,12 +18,10 @@ namespace BookBooking
         {
             AccountManager = new();
             Library = new();
-            LendableManager = new InventoryManager(this);
+            InventoryManager = new InventoryManager(this);
 
-            AddBaseLibraryContent();
-            //LoadData();
+            LoadData();
         }
-
 
         public void Start()
         {
@@ -65,10 +63,10 @@ namespace BookBooking
             }
             catch
             {
-                Library = new Library("Litslena", "Litslena-kälsta 6");
-                AccountManager.UserAccounts.Add(new AdministratorAccount() {FirstName = "Default", LastName = "Admin", UserName = "admin", MenuItemText = "Default admin account" });
+                AddBaseLibraryContent();
             }
         }
+
         public void SaveData()
         {
             JsonModel dataToSave = new JsonModel(Library, AccountManager.UserAccounts);
@@ -78,25 +76,26 @@ namespace BookBooking
             UIRenderer.DisplayText("Data sparad");
             Console.ReadKey();
         }
+
         private void AddBaseLibraryContent()
         {
             Library.Name = "Litslenas bibliotek";
             Library.Address = "Litslena-kälsta 6";
             Library.LendablesInInventory = new List<ILendable>()
             {
-                new Book("What the dog saw", "Malcom", "Gladwell", 1999),
-                new Book("Pol pots leende", "Peter", "Fröberg Idling", 2011),
-                new Book("Ängeln i Groznyj", "Åsne", "Seierstad", 1998),
-                new Book("Brev från nollpunkten", "Peter", "Englund", 1989),
-                new Book("Oryx and crake", "Margaret", "Atwood", 1987),
-                new Book("The blind assassin", "Margaret", "Atwood", 1995),
-                new Book("The shock doctrine", "Naomi", "Klein", 2008)
+                new Book("What the dog saw", "Malcom", "Gladwell", 2009),
+                new Book("Pol pots leende", "Peter", "Fröberg Idling", 2006),
+                new Book("Ängeln i Groznyj", "Åsne", "Seierstad", 2007),
+                new Book("Brev från nollpunkten", "Peter", "Englund", 1996),
+                new Book("Oryx and crake", "Margaret", "Atwood", 2003),
+                new Book("The blind assassin", "Margaret", "Atwood", 2000),
+                new Book("The shock doctrine", "Naomi", "Klein", 2007)
             };
 
             AccountManager.UserAccounts = new List<IAccount>()
             {
                 new AdministratorAccount() {FirstName = "Default", LastName = "Admin", UserName = "admin", MenuItemText = "Default admin account" },
-                new CustomerAccount() {FirstName = "Edda", LastName = "Ranlund", UserName = "Edda", MenuItemText = "Edda Ranlund" },
+                new CustomerAccount() {FirstName = "Lisa", LastName = "Svensson", UserName = "Lisa", MenuItemText = "Lisa Svensson" },
             };
         }
 

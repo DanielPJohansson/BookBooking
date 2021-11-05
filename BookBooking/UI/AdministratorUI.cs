@@ -29,6 +29,7 @@ namespace BookBooking
             SelectInMenu(menuOptions, exitOption);
         }
 
+        #region Lendable menus
         public void ListAllCurrentlyBorrowedLendables()
         {
             List<IListableAsMenu> currentlyBorrowed = new();
@@ -48,10 +49,56 @@ namespace BookBooking
         public void AddNewLendable()
         {
             
-            Session.Library.LendablesInInventory.Add(Session.LendableManager.CreateNewBook());
+            Session.Library.LendablesInInventory.Add(Session.InventoryManager.CreateNewBook());
             MainMenu();
         }
 
+        public override void LendableMenu()
+        {
+            List<MenuOption> menuOptions = new();
+
+            menuOptions.Add(new MenuOption() { MenuItemText = "Hantera bok", MethodCalledOnSelection = new MenuOption.MethodToCallOnSelection(EditSelectedLendable) });
+            AddBaseOptionsToLendableMenu(menuOptions);
+            MenuOption exitOption = AddExitOption("Tillbaka", new MenuOption.MethodToCallOnSelection(ListAllLendables));
+
+            SelectInMenu(menuOptions, exitOption);
+        }
+
+        public void ArchivedLendableMenu()
+        {
+            List<MenuOption> menuOptions = new();
+
+            MenuOption exitOption = AddExitOption("Tillbaka", new MenuOption.MethodToCallOnSelection(ListAllRemovedLendables));
+
+            SelectInMenu(menuOptions, exitOption);
+        }
+
+        private void EditSelectedLendable()
+        {
+            List<MenuOption> menuOptions = new List<MenuOption>();
+
+            if ((selectedItem as ILendable).CurrentlyBorrowedBy == null)
+            {
+                menuOptions.Add(new MenuOption() { MenuItemText = "Ta bort bok", MethodCalledOnSelection = new MenuOption.MethodToCallOnSelection(RemoveSelectedLenadableFromLibraryInventory) + new MenuOption.MethodToCallOnSelection(ListAllLendables) });
+            }
+            else
+            {
+                menuOptions.Add(new MenuOption() { MenuItemText = "Registrera bok som förlorad", MethodCalledOnSelection = new MenuOption.MethodToCallOnSelection(RemoveSelectedLenadableFromLibraryInventory) + new MenuOption.MethodToCallOnSelection(ListAllLendables) });
+                menuOptions.Add(new MenuOption() { MenuItemText = "Registrera bok som återlämnad", MethodCalledOnSelection = new MenuOption.MethodToCallOnSelection(ReturnSelectedLendable) + new MenuOption.MethodToCallOnSelection(ListAllLendables) });
+            }
+
+            MenuOption exitOption = AddExitOption("Tillbaka", new MenuOption.MethodToCallOnSelection(LendableMenu));
+
+            SelectInMenu(menuOptions, exitOption);
+
+            void RemoveSelectedLenadableFromLibraryInventory()
+            {
+                Session.InventoryManager.RemoveLendable(selectedItem as ILendable);
+            }
+        }
+        #endregion
+
+        #region Account menus
         public void ManageAccounts()
         {
             List<MenuOption> menuOptions = new();
@@ -105,51 +152,9 @@ namespace BookBooking
 
             SelectInMenu(menuOptions, exitOption);
         }
+        #endregion
 
-        public override void LendableMenu()
-        {
-            List<MenuOption> menuOptions = new();
-
-            menuOptions.Add(new MenuOption() { MenuItemText = "Hantera bok", MethodCalledOnSelection = new MenuOption.MethodToCallOnSelection(EditSelectedLendable) });
-            AddBaseOptionsToLendableMenu(menuOptions);
-            MenuOption exitOption = AddExitOption("Tillbaka", new MenuOption.MethodToCallOnSelection(ListAllLendables));
-
-            SelectInMenu(menuOptions, exitOption);
-        }
-
-        public void ArchivedLendableMenu()
-        {
-            List<MenuOption> menuOptions = new();
-
-            MenuOption exitOption = AddExitOption("Tillbaka", new MenuOption.MethodToCallOnSelection(ListAllRemovedLendables));
-
-            SelectInMenu(menuOptions, exitOption);
-        }
-
-        private void EditSelectedLendable()
-        {
-            List<MenuOption> menuOptions = new List<MenuOption>();
-
-            if ((selectedItem as ILendable).CurrentlyBorrowedBy == null)
-            {
-                menuOptions.Add(new MenuOption() { MenuItemText = "Ta bort bok", MethodCalledOnSelection = new MenuOption.MethodToCallOnSelection(RemoveSelectedLenadableFromLibraryInventory) + new MenuOption.MethodToCallOnSelection(ListAllLendables) });
-            }
-            else
-            {
-                menuOptions.Add(new MenuOption() { MenuItemText = "Registrera bok som förlorad", MethodCalledOnSelection = new MenuOption.MethodToCallOnSelection(RemoveSelectedLenadableFromLibraryInventory) + new MenuOption.MethodToCallOnSelection(ListAllLendables) });
-                menuOptions.Add(new MenuOption() { MenuItemText = "Registrera bok som återlämnad", MethodCalledOnSelection = new MenuOption.MethodToCallOnSelection(ReturnSelectedLendable) + new MenuOption.MethodToCallOnSelection(ListAllLendables) });
-            }
-
-            MenuOption exitOption = AddExitOption("Tillbaka", new MenuOption.MethodToCallOnSelection(LendableMenu));
-
-            SelectInMenu(menuOptions, exitOption);
-
-            void RemoveSelectedLenadableFromLibraryInventory()
-            {
-                Session.LendableManager.RemoveLendable(selectedItem as ILendable);
-            }
-        }
-
+        #region General
         public override void DisplayInformationBasedOnUser()
         {
             List<string> informationToDisplay = new();
@@ -180,6 +185,6 @@ namespace BookBooking
 
             UIRenderer.DisplayStringList(informationToDisplay, xPos: 50, yPos: 4);
         }
-
+        #endregion
     }
 }
