@@ -26,17 +26,12 @@ namespace BookBooking
             MenuItemText = $"{Title}. {AuthorFirstName} {AuthorLastName}";
         }
 
-        public List<string> DisplayInformation()
+        public List<string> InformationAsListOfStrings()
         {
             List<string> output = new();
             output.Add($"Title: {Title}");
             output.Add($"Författare: {AuthorLastName}, {AuthorFirstName}");
             output.Add($"Utgivningsår: {YearPublished}");
-
-            if (CurrentlyBorrowedBy != null)
-            {
-                output.Add("För tillfället utlånad");
-            }
 
             return output;
         }

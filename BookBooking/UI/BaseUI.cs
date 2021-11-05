@@ -9,7 +9,7 @@ namespace BookBooking
     public class BaseUI
     {
         public UserSession Session { get; set; }
-        public IMenuItem selectedItem;
+        public IListableAsMenu selectedItem;
         public BaseUI(UserSession session)
         {
             Session = session;
@@ -17,54 +17,55 @@ namespace BookBooking
 
         public virtual void MainMenu()
         {
-            List<MenuItem> menuOptions = new();
+            List<MenuOption> menuOptions = new();
 
             AddBaseOptionsToMainMenu(menuOptions);
 
-            MenuItem exitOption = AddExitOption("Logga ut", new MenuItem.MethodToCallOnSelection(LogOut));
+            MenuOption exitOption = AddExitOption("Logga ut", new MenuOption.MethodToCallOnSelection(LogOut));
 
+            UIRenderer.ResetScreen();
             SelectInMenu(menuOptions, exitOption);
         }
 
-        public void AddBaseOptionsToMainMenu(List<MenuItem> menuOptions)
+        public void AddBaseOptionsToMainMenu(List<MenuOption> menuOptions)
         {
-            menuOptions.Add(new MenuItem() { MenuItemText = "Visa bibliotekets boklista", MethodCalledOnSelection = new MenuItem.MethodToCallOnSelection(ListAllLendables) });
-            menuOptions.Add(new MenuItem() { MenuItemText = "Visa dina nuvarande lån", MethodCalledOnSelection = new MenuItem.MethodToCallOnSelection(ListUsersCurrentLoans) });
+            menuOptions.Add(new MenuOption() { MenuItemText = "Visa bibliotekets boklista", MethodCalledOnSelection = new MenuOption.MethodToCallOnSelection(ListAllLendables) });
+            menuOptions.Add(new MenuOption() { MenuItemText = "Visa dina nuvarande lån", MethodCalledOnSelection = new MenuOption.MethodToCallOnSelection(ListUsersCurrentLoans) });
         }
         public void ListAllLendables()
         {
-            List<IMenuItem> lenadables = new List<IMenuItem>(Session.Library.LendablesInInventory);
+            List<IListableAsMenu> lenadables = new List<IListableAsMenu>(Session.Library.LendablesInInventory);
 
-            OpenMenuBasedOnList(lenadables, new MenuItem.MethodToCallOnSelection(LendableMenu), new MenuItem.MethodToCallOnSelection(MainMenu));
+            OpenMenuBasedOnList(lenadables, new MenuOption.MethodToCallOnSelection(LendableMenu), new MenuOption.MethodToCallOnSelection(MainMenu));
         }
 
         private void ListUsersCurrentLoans()
         {
-            List<IMenuItem> currentLoans = new();
+            List<IListableAsMenu> currentLoans = new();
             currentLoans.AddRange(Session.Library.LendablesInInventory.Where(lendable => lendable.CurrentlyBorrowedBy == Session.User)
-                                                .Select(lendable => lendable as IMenuItem)
+                                                .Select(lendable => lendable as IListableAsMenu)
                                                 .ToList());
-            OpenMenuBasedOnList(currentLoans, new MenuItem.MethodToCallOnSelection(LendableMenu), new MenuItem.MethodToCallOnSelection(MainMenu));
+            OpenMenuBasedOnList(currentLoans, new MenuOption.MethodToCallOnSelection(LendableMenu), new MenuOption.MethodToCallOnSelection(MainMenu));
         }
 
         public virtual void LendableMenu()
         {
-            List<MenuItem> menuOptions = new List<MenuItem>();
+            List<MenuOption> menuOptions = new List<MenuOption>();
             AddBaseOptionsToLendableMenu(menuOptions);
-            MenuItem exitOption = AddExitOption("Tillbaka", new MenuItem.MethodToCallOnSelection(ListAllLendables));
+            MenuOption exitOption = AddExitOption("Tillbaka", new MenuOption.MethodToCallOnSelection(ListAllLendables));
 
             SelectInMenu(menuOptions, exitOption);
         }
 
-        public void AddBaseOptionsToLendableMenu(List<MenuItem> menuOptions)
+        public void AddBaseOptionsToLendableMenu(List<MenuOption> menuOptions)
         {
             if ((selectedItem as ILendable).CurrentlyBorrowedBy == null)
             {
-                menuOptions.Add(new MenuItem() { MenuItemText = "Låna bok", MethodCalledOnSelection = new MenuItem.MethodToCallOnSelection(BorrowSelectedLendable) + new MenuItem.MethodToCallOnSelection(ListAllLendables) });
+                menuOptions.Add(new MenuOption() { MenuItemText = "Låna bok", MethodCalledOnSelection = new MenuOption.MethodToCallOnSelection(BorrowSelectedLendable) + new MenuOption.MethodToCallOnSelection(ListAllLendables) });
             }
             if ((selectedItem as ILendable).CurrentlyBorrowedBy == Session.User)
             {
-                menuOptions.Add(new MenuItem() { MenuItemText = "Lämna tillbaka bok", MethodCalledOnSelection = new MenuItem.MethodToCallOnSelection(ReturnSelectedLendable) + new MenuItem.MethodToCallOnSelection(ListUsersCurrentLoans) });
+                menuOptions.Add(new MenuOption() { MenuItemText = "Lämna tillbaka bok", MethodCalledOnSelection = new MenuOption.MethodToCallOnSelection(ReturnSelectedLendable) + new MenuOption.MethodToCallOnSelection(ListUsersCurrentLoans) });
             }
         }
 
@@ -78,43 +79,62 @@ namespace BookBooking
             Session.LendableManager.Return(selectedItem as ILendable);
         }
 
-        public void OpenMenuBasedOnList(List<IMenuItem> itemList, MenuItem.MethodToCallOnSelection methodToCallOnSelection, MenuItem.MethodToCallOnSelection returnToOnExit)
+        public void OpenMenuBasedOnList(List<IListableAsMenu> itemList, MenuOption.MethodToCallOnSelection methodToCallOnSelection, MenuOption.MethodToCallOnSelection returnToOnExit)
         {
-            List<MenuItem> menuOptions = GenerateMenuOptionsFromList(itemList, methodToCallOnSelection);
+            List<MenuOption> menuOptions = GenerateMenuOptionsFromList(itemList, methodToCallOnSelection);
 
-            MenuItem exitOption = AddExitOption("Tillbaka", returnToOnExit);
+            MenuOption exitOption = AddExitOption("Tillbaka", returnToOnExit);
+            UIRenderer.ResetScreen();
             SelectInMenu(menuOptions, exitOption, itemList);
         }
 
-        public void SelectInMenu(List<MenuItem> menuOptions, MenuItem exitOption, List<IMenuItem> itemList = null)
+        public void SelectInMenu(List<MenuOption> menuOptions, MenuOption exitOption, List<IListableAsMenu> itemsListedInMenu = null)
         {
             int selection = MenuNavigator.OpenMenuAndReturnIndexOfSelected(new Menu(menuOptions, exitOption));
 
-            if (itemList != null && selection < itemList.Count)
+            if (itemsListedInMenu != null && selection < itemsListedInMenu.Count)
             {
-                selectedItem = itemList[selection];
-                UIRenderer.ClearInformationDisplay();
-                UIRenderer.DisplayStringList(selectedItem.DisplayInformation(), xPos: 50, yPos: 4);
-            }
-            else
-            {
-                UIRenderer.ResetScreen();
+                selectedItem = itemsListedInMenu[selection];
+                DisplayInformationBasedOnUser();
             }
 
             menuOptions[selection].MethodCalledOnSelection();
         }
 
-        public MenuItem AddExitOption(string menuItemText, MenuItem.MethodToCallOnSelection methodToCallOnSelection)
+        public virtual void DisplayInformationBasedOnUser()
         {
-            return new MenuItem() { MenuItemText = menuItemText, MethodCalledOnSelection = methodToCallOnSelection };
+            List<string> informationToDisplay = new();
+
+            if(selectedItem is ILendable)
+            {
+                ILendable lendable = selectedItem as ILendable;
+                informationToDisplay.AddRange(lendable.InformationAsListOfStrings());
+                
+                if(lendable.CurrentlyBorrowedBy == Session.User)
+                {
+                    informationToDisplay.Add("Lånad av dig.");
+                    informationToDisplay.Add($"Återlämnas senast: {lendable.LastReturnDate:dd/MM/yy}");
+                }
+                else if(lendable.CurrentlyBorrowedBy != null)
+                {
+                    informationToDisplay.Add("Tillfälligt utlånad.");
+                }
+            }
+
+            UIRenderer.DisplayStringList(informationToDisplay, xPos: 50, yPos: 4);
         }
 
-        public List<MenuItem> GenerateMenuOptionsFromList(List<IMenuItem> itemList, MenuItem.MethodToCallOnSelection methodToCallOnSelection)
+        public MenuOption AddExitOption(string menuItemText, MenuOption.MethodToCallOnSelection methodToCallOnSelection)
         {
-            List<MenuItem> menuOptions = new();
-            foreach (IMenuItem item in itemList)
+            return new MenuOption() { MenuItemText = menuItemText, MethodCalledOnSelection = methodToCallOnSelection };
+        }
+
+        public List<MenuOption> GenerateMenuOptionsFromList(List<IListableAsMenu> itemList, MenuOption.MethodToCallOnSelection methodToCallOnSelection)
+        {
+            List<MenuOption> menuOptions = new();
+            foreach (IListableAsMenu item in itemList)
             {
-                menuOptions.Add(new MenuItem() { MenuItemText = item.MenuItemText, MethodCalledOnSelection = methodToCallOnSelection });
+                menuOptions.Add(new MenuOption() { MenuItemText = item.MenuItemText, MethodCalledOnSelection = methodToCallOnSelection });
             }
             return menuOptions;
         }
@@ -127,10 +147,11 @@ namespace BookBooking
         }
         public void DefaultMenu()
         {
-            List<MenuItem> menuOptions = new List<MenuItem>();
+            List<MenuOption> menuOptions = new List<MenuOption>();
 
-            MenuItem exitOption = AddExitOption("Tillbaka", new MenuItem.MethodToCallOnSelection(MainMenu));
-
+            MenuOption exitOption = AddExitOption("Tillbaka", new MenuOption.MethodToCallOnSelection(MainMenu));
+            
+            UIRenderer.ResetScreen();
             SelectInMenu(menuOptions, exitOption);
         }
     }

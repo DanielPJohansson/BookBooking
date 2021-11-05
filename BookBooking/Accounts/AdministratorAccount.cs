@@ -11,17 +11,21 @@ namespace BookBooking
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string UserName { get; set; }
-        public string Password { get; set; }
         public bool IsAdmin { get; set; }
+        public string MenuItemText { get; set; }
 
-        public AdministratorAccount(string firstName, string lastName, string userName, string password)
+        public AdministratorAccount()
         {
-            FirstName = firstName;
-            LastName = lastName;
-            UserName = userName;
-            Password = password;
             IsAdmin = true;
         }
 
+        public List<string> InformationAsListOfStrings()
+        {
+            List<string> output = new();
+            output.Add($"Namn: {FirstName} {LastName}");
+            output.Add("Administratör");
+
+            return output;
+        }
     }
 }

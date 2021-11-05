@@ -10,7 +10,7 @@ namespace BookBooking
     public class UserSession
     {
         public IAccount User { get; set; }
-        public LendableManager LendableManager { get; set; }
+        public InventoryManager LendableManager { get; set; }
         public Library Library { get; set; }
         public AccountManager AccountManager { get; set; }
 
@@ -18,10 +18,10 @@ namespace BookBooking
         {
             AccountManager = new();
             Library = new();
-            LendableManager = new LendableManager(this);
+            LendableManager = new InventoryManager(this);
 
-            //AddBaseLibraryContent();
-            LoadData();
+            AddBaseLibraryContent();
+            //LoadData();
         }
 
 
@@ -66,7 +66,7 @@ namespace BookBooking
             catch
             {
                 Library = new Library("Litslena", "Litslena-kälsta 6");
-                AccountManager.UserAccounts.Add(new AdministratorAccount("Admin", "Admin", "Admin", "Admin"));
+                AccountManager.UserAccounts.Add(new AdministratorAccount() {FirstName = "Default", LastName = "Admin", UserName = "admin", MenuItemText = "Default admin account" });
             }
         }
         public void SaveData()
@@ -75,7 +75,7 @@ namespace BookBooking
             var settings = new JsonSerializerSettings { PreserveReferencesHandling = PreserveReferencesHandling.Objects, TypeNameHandling = TypeNameHandling.Auto };
             string jsonString = JsonConvert.SerializeObject(dataToSave, Formatting.Indented, settings);
             File.WriteAllText("libraryAndAccounts.json", jsonString);
-            Console.WriteLine("Data sparad");
+            UIRenderer.DisplayText("Data sparad");
             Console.ReadKey();
         }
         private void AddBaseLibraryContent()
@@ -95,8 +95,8 @@ namespace BookBooking
 
             AccountManager.UserAccounts = new List<IAccount>()
             {
-                new AdministratorAccount("Admin", "Admin", "Admin", "Admin"),
-                new CustomerAccount("Edda", "Ranlund", "EddRan", "321dsa"),
+                new AdministratorAccount() {FirstName = "Default", LastName = "Admin", UserName = "admin", MenuItemText = "Default admin account" },
+                new CustomerAccount() {FirstName = "Edda", LastName = "Ranlund", UserName = "Edda", MenuItemText = "Edda Ranlund" },
             };
         }
 

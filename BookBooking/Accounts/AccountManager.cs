@@ -10,34 +10,55 @@ namespace BookBooking
     {
         public List<IAccount> UserAccounts { get; set; } = new();
 
-        public IAccount CreateCustomerAccount()
+        public void CreateCustomerAccount()
+        {
+            CustomerAccount account = new();
+
+            CreateAccount(account);
+        }
+        public void CreateAdministratorAccount()
+        {
+            AdministratorAccount account = new();
+
+            CreateAccount(account);
+        }
+
+        private void CreateAccount(IAccount account)
         {
             UIRenderer.ClearArea();
             int yPos = 3;
             UIRenderer.DisplayText("Fyll i informationen nedan.", yPos: yPos);
-            string customerFirstName = InputManager.RequestNameInput("Förnamn: ", ++yPos);
-            string customerLastName = InputManager.RequestNameInput("Efternamn: ", ++yPos);
+            account.FirstName = InputManager.RequestNameInput("Förnamn: ", ++yPos);
+            account.LastName = InputManager.RequestNameInput("Efternamn: ", ++yPos);
 
-            UIRenderer.DisplayText("Nytt konto tillagt. Tryck på valfri tangent för att fortsätta", yPos: yPos + 2);
+            string userName;
+
+            while (true)
+            {
+                userName = InputManager.RequestNewUserName(yPos + 1);
+                bool isExistingUserName = UserAccounts.Any(user => user.UserName.ToLower() == userName.ToLower());
+                if (!isExistingUserName)
+                {
+                    break;
+                }
+                else
+                {
+                    UIRenderer.DisplayInvalidInputMessage("Användarnamnet är redan taget.");
+                }
+            }
+
+            account.UserName = userName;
+            account.MenuItemText = $"{account.LastName}, {account.FirstName}";
+
+            UserAccounts.Add(account);
+            UIRenderer.DisplayText("Nytt konto tillagt. Tryck på valfri tangent för att fortsätta", yPos: yPos + 2, maxWidth: 100);
             Console.ReadKey();
-
-            return new CustomerAccount("", "", "", "");
-        }
-
-        public IAccount CreateAdministratorAccount()
-        {
-            IAccount administrator = new AdministratorAccount("", "", "", "");
-            return administrator;
-        }
-
-        public string GenerateUserName()
-        {
-            throw new NotImplementedException();
         }
 
         public IAccount LogIn()
         {
             IAccount user;
+            UIRenderer.ResetScreen();
 
             while (true)
             {

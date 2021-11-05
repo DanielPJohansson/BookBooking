@@ -8,7 +8,6 @@ namespace BookBooking
 {
     public static class MenuNavigator
     {
-
         public static int OpenMenuAndReturnIndexOfSelected(Menu menu)
         {
             UIRenderer.ClearArea(yPos: 3, width: 50);
@@ -16,7 +15,7 @@ namespace BookBooking
             return selected;
         }
 
-        private static int SelectInMenu(List<MenuItem> menuOptions)
+        private static int SelectInMenu(List<MenuOption> menuOptions)
         {
             int selectedRow = 0;
             ConsoleKeyInfo pressedKey;
@@ -32,7 +31,7 @@ namespace BookBooking
             return selectedRow;
         }
 
-        private static int ChangeSelectedRow(List<MenuItem> menuOptions, ref int selectedRow, ConsoleKeyInfo pressedKey)
+        private static int ChangeSelectedRow(List<MenuOption> menuOptions, ref int selectedRow, ConsoleKeyInfo pressedKey)
         {
             if (pressedKey.Key == ConsoleKey.UpArrow && selectedRow > 0)
             {

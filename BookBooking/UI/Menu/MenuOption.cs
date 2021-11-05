@@ -6,16 +6,12 @@ using System.Threading.Tasks;
 
 namespace BookBooking
 {
-    public class MenuItem : IMenuItem
+    public class MenuOption
     {
         public string MenuItemText { get; set; }
 
         public delegate void MethodToCallOnSelection();
         public MethodToCallOnSelection MethodCalledOnSelection { get; set; }
 
-        public List<string> DisplayInformation()
-        {
-            return new List<string>();
-        }
     }
 }

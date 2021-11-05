@@ -49,7 +49,30 @@ namespace BookBooking
             return year;
         }
 
-        public static string RequestUnrestrictedInput(string requestMessage, int yPos = 3)
+        public static string RequestNewUserName(int yPos = 3)
+        {
+            Regex regex = new Regex(@"^[a-zA-ZåäöÅÄÖ0-9]{4,}$");
+            string input = "";
+            while (true)
+            {
+                UIRenderer.ClearArea(yPos: yPos);
+                UIRenderer.DisplayText("Önskat användarnamn: ", yPos: yPos);
+                input = Console.ReadLine();
+                
+                if(!regex.IsMatch(input))
+                {
+                    UIRenderer.DisplayInvalidInputMessage("Ange användarnamn med minst fyra tecken bestående av siffror och bokstäver från svenska alfabetet");
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            return input;
+        }
+
+        public static string RequestFreeInput(string requestMessage, int yPos = 3)
         {
             string output;
 
@@ -112,6 +135,6 @@ namespace BookBooking
 
             return output;
         }
-        
+
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BookBooking
 {
-    public interface ILendable : IMenuItem
+    public interface ILendable : IListableAsMenu
     {
         public string Title { get; set; }
         public DateTime DateOfLoan { get; set; }

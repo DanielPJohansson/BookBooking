@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace BookBooking
 {
-    public class LendableManager
+    public class InventoryManager
     {
         public UserSession Session { get; set; }
 
-        public LendableManager(UserSession currentSession)
+        public InventoryManager(UserSession currentSession)
         {
             Session = currentSession;
         }
@@ -21,6 +21,7 @@ namespace BookBooking
             {
                 borrowedItem.CurrentlyBorrowedBy = Session.User;
                 borrowedItem.DateOfLoan = DateTime.Now;
+                borrowedItem.LastReturnDate = borrowedItem.DateOfLoan.AddDays(14);
             }
         }
 
@@ -43,7 +44,7 @@ namespace BookBooking
         {
             UIRenderer.ResetScreen();
             int yPos = 3;
-            string title = InputManager.RequestUnrestrictedInput("Bokens titel: ", yPos);
+            string title = InputManager.RequestFreeInput("Bokens titel: ", yPos);
             string authorFirstName = InputManager.RequestNameInput("Författarens förnamn: ", ++yPos);
             string authorLastName = InputManager.RequestNameInput("Författarens efternamn: ", ++yPos);
             int yearPublished = InputManager.RequestYearInput("Utgivningsår: ", ++yPos);

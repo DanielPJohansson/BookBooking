@@ -8,10 +8,10 @@ namespace BookBooking
 {
     public class Menu
     {
-        public List<MenuItem> Content { get; set; }
-        public MenuItem OnExitGoTo { get; set; }
+        public List<MenuOption> Content { get; set; }
+        public MenuOption OnExitGoTo { get; set; }
 
-        public Menu(List<MenuItem> content, MenuItem onExitGoTo)
+        public Menu(List<MenuOption> content, MenuOption onExitGoTo)
         {
             Content = content;
             OnExitGoTo = onExitGoTo;
